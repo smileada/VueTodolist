@@ -1,0 +1,141 @@
+html,body{
+  width: 100%;
+  height: 100%;
+  text-size-adjust: 100%; //解决移动端横竖屏文字放大问题
+}
+
+body {
+  margin: 0;
+  padding: 0;
+ // overflow: auto;
+  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased; //平滑
+  text-rendering: optimizeLegibility;
+  user-drag: none; //禁止拖拽
+  -ms-content-zooming: none; //禁止拖拽
+  touch-action: manipulation;
+  word-wrap: break-word;
+  user-select: none;  //禁止选中
+  font-family: "Helvetica Neue", Helvetica,Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  font-size:16px;
+ // cursor: url("../images/finger.png?base64"),auto;
+}
+
+
+//全部元素盒模型为边框,ios链接JS高亮颜色覆盖设置为透明,禁止默认菜单
+* {
+  box-sizing: content-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+//点击与焦点外边框线无
+:active, :focus {
+  outline: 0
+}
+
+//基础iframe
+
+iframe{
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+//初始化按钮手势、看上去像按钮
+input[type=button], input[type=reset], input[type=submit] {
+  cursor: pointer;
+  appearance: button;
+}
+
+//解决移动端300ms延迟
+span, a, a div,a span,button div,button span,input,button,textarea{ touch-action: manipulation;}
+
+//按钮初始化
+button {
+  border: 0;
+  font-family: inherit;
+  font-style: inherit;
+  font-variant: inherit;
+  line-height: 1;
+  text-transform: none;
+  cursor: pointer;
+  appearance: button
+}
+
+a{
+  text-decoration: none;
+  &:active, &:focus {
+    outline: 0;
+  }
+}
+
+//禁用鼠标状态
+a[disabled], button[disabled], html input[disabled] {
+  cursor: default
+}
+//FireFox 私有设置边框
+button, input{
+  &::-moz-focus-inner{
+    padding: 0;
+    border: 0
+  }
+}
+
+//input初始化复选、单选
+input[type=checkbox],input[type=radio]{
+  padding: 0;
+  box-sizing: border-box
+}
+
+//input数字框辅助按钮
+input[type=number]{
+  &::-webkit-inner-spin-button,&::-webkit-outer-spin-button {
+    height: auto
+  }
+}
+
+//设置搜索没有外观样式
+input[type=search]{
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-decoration{
+    -webkit-appearance: none
+  }
+}
+
+//表格初始化
+table {
+  border-collapse: collapse;
+  border-spacing: 0
+}
+
+td, th {
+  padding: 0
+}
+
+//sticky 属性设置
+.sticky {
+  position: sticky;
+  top: 0
+}
+
+//设置上、下角标
+sub, sup {
+  position: relative;
+  font-size: 75%;
+  line-height: 0;
+  vertical-align: baseline
+}
+
+sup {
+  top: -.5em
+}
+
+sub {
+  bottom: -.25em
+}
+
+
+
+

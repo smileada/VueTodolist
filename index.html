@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
+    <title>vue-练习-1~5</title>
+    <link href="static/css/normalize.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="static/css/core.css">
+</head>
+<body>
+    <div id="app">
+    <header class="header">
+        <h2>{{ title }}</h2>
+        <!-- ****************
+            ** 点击添加使用 -> dialog 方式添加
+            **************** -->
+        <button @click="handelclick">添加</button>
+    </header>
+    <div class="main">
+        <!-- 表格区域 start-->
+        <table class="main-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>部门</th>
+                    <th>获奖</th>
+                    <th>得分</th>
+                    <th>详细</th>
+                    <th>删除</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 表格循环区域 start -->
+                <!--******************** 
+                 ******  注意事项  *****
+                 **  ID号 （序号）
+                 **  姓名
+                 **  性别（判断男女对应图标）
+                 **  部门
+                 **  级别（判断级别对应图标）
+                 **  分数（小于60用红色 red，60[含60]以上85以下用黄色 yellow，85[含85]以上用绿色 green）
+                 **  查看详细 点击查看详细-> dialog
+                 ***********************-->
+                <tr v-for="(item,index) of list">
+                    <td>{{index+1}}</td>
+                    <td>{{item.name}}</td>
+                    <td>
+                        <span v-if="item.sex">
+                            <i v-if="item.sex==0" class="ic-icon ic-male"></i>
+                            <i v-if="item.sex==1" class="ic-icon ic-female"></i>
+                        </span>
+                    </td>
+                    <td>{{item.section}}</td>
+                    <td>
+                        <i v-if="item.win=='s'" class="ic-icon ic-s"></i>
+                        <i v-if="item.win=='a'" class="ic-icon ic-a"></i>
+                        <i v-if="item.win=='b'" class="ic-icon ic-b"></i>
+                        <i v-if="item.win=='c'" class="ic-icon ic-c"></i>
+                    </td>
+                    <td>
+                        <span v-if="item.score<60" class="red">{{item.score}}</span>
+                        <span v-else-if="item.score>=60 && item.score<85"  class="yellow">{{item.score}}</span>
+                        <span v-else-if="item.score>=85" class="green">{{item.score}}</span>
+                    </td>
+                    <td><button @click="handelDetail(item)">查看详细</button></td>
+                    <td><button @click="handelDelete(index)">删除</button></td>
+                </tr>
+                <!-- 表格循环区域 end -->
+            </tbody>
+        </table>
+        <!-- 表格区域 end-->
+    </div>
+    <!-- 输入位置 start-->
+    <div class="dialog" style="display: none;" v-show="addDialogShow">
+        <div class="dialog-main">
+            <div class="dialog-content">
+                <dl>
+                    <dt>姓名</dt>
+                    <dd><input type="text" v-model="inputNameValue"></dd>
+                </dl>
+                <dl>
+                    <dt>性别</dt>
+                    <dd class="sex-style">
+                        <label for="male"><input type="radio"  id="male" value="0"  name="sex" v-model="inputSexValue">男</label>
+                        <label for="female"><input type="radio"  id="female" value="1"  name="sex" v-model="inputSexValue">女</label>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>出生日期</dt>
+                    <dd><input type="date" v-model="inputDateValue"></dd>
+                </dl>
+                <dl>
+                    <dt>获奖情况</dt>
+                    <dd>
+                        <select v-model="inputWinValue">
+                            <option value="s">S级</option>
+                            <option value="a">A级</option>
+                            <option value="b">B级</option>
+                            <option value="c">C级</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>得分</dt>
+                    <dd><input type="number" min="0" max="100" v-model="inputScoreValue"></dd>
+                </dl>
+                <dl>
+                    <dt>部门</dt>
+                    <dd>
+                        <select v-model="inputSectionValue">
+                            <option value="客服1部">客服1部</option>
+                            <option value="客服2部">客服2部</option>
+                            <option value="市场部">市场部</option>
+                            <option value="技术部">技术部</option>
+                            <option value="财务部">财务部</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>岗位</dt>
+                    <dd>
+                        <select v-model="inputJobsValue">
+                            <option value="0">初级</option>
+                            <option value="1">中级</option>
+                            <option value="2">高级</option>
+                            <option value="3">资深</option>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dd><button @click="handelAddData">确定</button><button @click="handelCancelData">取消</button></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <!-- 输入位置  end-->
+    
+        <!-- 查看位置 start-->
+        <div class="dialog" style="display: none;" v-show="DialogShow">
+            <div class="dialog-main">
+                <div class="dialog-content">
+                    <dl>
+                        <dt>姓名</dt>
+                        <dd>
+                            <span>{{listdata.name}}</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>性别</dt>
+                        <dd>
+                            <span v-if="listdata.sex==0">男</span>
+                            <span v-if="listdata.sex==1">女</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>出生日期</dt>
+                        <dd>
+                            <span>{{listdata.date}}</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>获奖情况</dt>
+                        <dd>
+                            <span v-if="listdata.win=='s'">s级</span>
+                            <span v-if="listdata.win=='a'">a级</span>
+                            <span v-if="listdata.win=='b'">b级</span>
+                            <span v-if="listdata.win=='c'">c级</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>得分</dt>
+                        <dd><span>{{listdata.score}}</span></dd>
+                    </dl>
+                    <dl>
+                        <dt>部门</dt>
+                        <dd>
+                           <span>{{listdata.section}}</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>岗位</dt>
+                        <dd>
+                           <span v-if="listdata.jobs=='0'">初级</span>
+                            <span v-if="listdata.jobs=='1'">中级</span>
+                            <span v-if="listdata.jobs=='2'">高级</span>
+                            <spanl8yuhgvp v-if="listdata.jobs=='3'">资深</spanl8yuhgvp 87>
+                        </dd>
+                    </dl>
+                    <dl>
+    
+                        <dd><button @click="handelCancelData">关闭</button></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <!-- 查看位置  end-->
+    </div>    
+        <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+        <script src="static/js/pageengine.js"></script>
+</body>
+</html>
